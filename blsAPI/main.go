@@ -35,10 +35,10 @@ var (
 )
 
 type Request struct {
-	Seriesid        []string `json:"seriesid"`
-	Startyear       string   `json:"startyear"`
-	Endyear         string   `json:"endyear"`
-	RegistrationKey string   `json:"registrationkey"`
+	Seriesid  []string `json:"seriesid"`
+	Startyear string   `json:"startyear"`
+	Endyear   string   `json:"endyear"`
+	//RegistrationKey string   `json:"registrationkey"`
 }
 
 type Response struct {
@@ -90,10 +90,10 @@ func getUnemployment() {
 	seriesID = append(seriesID, "LNS14000000") // Monthly Unemployment
 
 	request := Request{
-		Seriesid:        seriesID,
-		Startyear:       "2015",
-		Endyear:         "2021",
-		RegistrationKey: "7598c2d20c3f4a73b3e447af4a2889b7",
+		Seriesid:  seriesID,
+		Startyear: "2015",
+		Endyear:   "2021",
+		//RegistrationKey:
 	}
 	body, _ := json.Marshal(request)
 
@@ -177,10 +177,10 @@ func getCompensation() {
 	// State and local government, All workers, Total compensation - CMU3010000000000D
 
 	request := Request{
-		Seriesid:        seriesID,
-		Startyear:       "2015",
-		Endyear:         "2021",
-		RegistrationKey: "7598c2d20c3f4a73b3e447af4a2889b7",
+		Seriesid:  seriesID,
+		Startyear: "2015",
+		Endyear:   "2021",
+		//RegistrationKey:
 	}
 
 	body, _ := json.Marshal(request)
@@ -287,7 +287,7 @@ func createChart1() *charts.Line {
 	line.AddXAxis(years[1:7])
 	line.AddYAxis("Unemployment", unemploymentChange, charts.LineOpts{Smooth: true})
 	line.AddYAxis("Compensation", compenstationChange, charts.LineOpts{Smooth: true})
-	line.Title = "Compensation vs Unemployemnt before and after COVID-19"
+	line.Title = "Compensation vs Unemployemnt\nBefore and After COVID-19"
 	return line
 }
 
