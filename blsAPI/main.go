@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"sync"
 
 	"database/sql"
@@ -25,6 +26,9 @@ var (
 	port        = ":8080"
 	wg          sync.WaitGroup
 
+	startYear string
+	endYear   string
+	//registrationKey string
 	years []string
 
 	unemploymentAverage []float64
@@ -63,10 +67,24 @@ type Response struct {
 
 func main() {
 
+	//registrationKey =
+
+	year1 := 2016
+	year1 = year1 - 1
+	year2 := 2021
+
+	startYear = strconv.Itoa(year1)
+	endYear = strconv.Itoa(year2)
+	fmt.Println(startYear, endYear)
+
 	getUnemployment()
 	getCompensation()
 
-	years = append(years, "2015", "2016", "2017", "2018", "2019", "2020", "2021")
+	for i := year1; i <= year2; i++ {
+		year := strconv.Itoa(i)
+		years = append(years, year)
+		fmt.Println(years)
+	}
 
 	formatUnemployment()
 	formatCompensation()
@@ -91,9 +109,9 @@ func getUnemployment() {
 
 	request := Request{
 		Seriesid:  seriesID,
-		Startyear: "2015",
-		Endyear:   "2021",
-		//RegistrationKey:
+		Startyear: startYear,
+		Endyear:   endYear,
+		//RegistrationKey: registrationKey,
 	}
 	body, _ := json.Marshal(request)
 
@@ -178,9 +196,9 @@ func getCompensation() {
 
 	request := Request{
 		Seriesid:  seriesID,
-		Startyear: "2015",
-		Endyear:   "2021",
-		//RegistrationKey:
+		Startyear: startYear,
+		Endyear:   endYear,
+		//RegistrationKey: registrationKey,
 	}
 
 	body, _ := json.Marshal(request)
@@ -284,7 +302,7 @@ func renderPage(w http.ResponseWriter, r *http.Request) {
 
 func createChart1() *charts.Line {
 	line := charts.NewLine()
-	line.AddXAxis(years[1:7])
+	line.AddXAxis(years[1:])
 	line.AddYAxis("Unemployment", unemploymentChange, charts.LineOpts{Smooth: true})
 	line.AddYAxis("Compensation", compenstationChange, charts.LineOpts{Smooth: true})
 	line.Title = "Compensation vs Unemployemnt\nBefore and After COVID-19"
